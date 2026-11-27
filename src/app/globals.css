@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-saffron-50: #fff8ed;
+  --color-saffron-100: #ffefd3;
+  --color-saffron-200: #ffdaa6;
+  --color-saffron-300: #ffbe6e;
+  --color-saffron-400: #ff9834;
+  --color-saffron-500: #ff7a0d;
+  --color-saffron-600: #f05e03;
+  --color-saffron-700: #c74504;
+  --color-saffron-800: #9e360b;
+  --color-saffron-900: #7f2e0c;
+
+  --color-sacred-50: #fdf6e9;
+  --color-sacred-100: #faeacb;
+  --color-sacred-200: #f4d08e;
+  --color-sacred-300: #ecb34f;
+  --color-sacred-400: #e49a24;
+  --color-sacred-500: #d4820d;
+  --color-sacred-600: #b46409;
+  --color-sacred-700: #8d4a09;
+  --color-sacred-800: #6b380d;
+  --color-sacred-900: #572e0e;
+
+  --color-deepred-50: #fef2f2;
+  --color-deepred-500: #c0392b;
+  --color-deepred-700: #922b21;
+
+  --color-mandap-50: #fdf4e7;
+  --color-mandap-100: #fae8c8;
+  --color-mandap-500: #c0871a;
+  --color-mandap-700: #8c5a0a;
+
+  --font-serif: "Georgia", "Cambria", ui-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background-color: #fdf8f2;
+  color: #1a0a00;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Om pattern SVG background */
+.sacred-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Gradient text */
+.gradient-sacred {
+  background: linear-gradient(135deg, #f97316 0%, #d4820d 50%, #c0392b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Lotus pattern border */
+.lotus-border {
+  border-image: repeating-linear-gradient(90deg, #f97316 0px, #d4820d 10px, #f97316 20px) 1;
+}
+
+/* Card hover glow */
+.card-sacred:hover {
+  box-shadow: 0 0 0 1px rgba(249,115,22,0.3), 0 8px 32px rgba(249,115,22,0.15);
+}
+
+/* Shimmer skeleton */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0e6d8 25%, #fdf0e0 50%, #f0e6d8 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* Diya flame animation */
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) rotate(-2deg); opacity: 1; }
+  25% { transform: scaleY(1.05) rotate(2deg); opacity: 0.9; }
+  50% { transform: scaleY(0.95) rotate(-1deg); opacity: 1; }
+  75% { transform: scaleY(1.08) rotate(1deg); opacity: 0.85; }
+}
+.flame {
+  animation: flicker 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}

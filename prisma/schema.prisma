@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  passwordHash   String
+  phone          String?
+  gotra          String?
+  nakshatra      String?
+  rashi          String?
+  role           String    @default("DEVOTEE") // DEVOTEE | ADMIN
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  bookings       Booking[]
+  managedTemples Temple[]  @relation("TempleManager")
+}
+
+model Temple {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  name        String
+  location    String
+  state       String
+  deity       String
+  tradition   String
+  description String
+  imageUrl    String
+  timings     String
+  rating      Float          @default(4.9)
+  reviewCount Int            @default(120)
+  featured    Boolean        @default(false)
+  isActive    Boolean        @default(true)
+  managerId   String?
+  manager     User?          @relation("TempleManager", fields: [managerId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  poojas      PoojaService[]
+  priests     Priest[]
+  bookings    Booking[]
+}
+
+model Priest {
+  id            String    @id @default(cuid())
+  name          String
+  title         String
+  experienceYrs Int
+  languages     String
+  templeId      String
+  temple        Temple    @relation(fields: [templeId], references: [id], onDelete: Cascade)
+  isAvailable   Boolean   @default(true)
+  bookings      Booking[]
+}
+
+model PoojaService {
+  id           String    @id @default(cuid())
+  templeId     String
+  temple       Temple    @relation(fields: [templeId], references: [id], onDelete: Cascade)
+  name         String
+  category     String
+  description  String
+  benefits     String
+  durationMins Int
+  priceInr     Int
+  mode         String    @default("BOTH") // IN_PERSON | LIVE_STREAM | BOTH
+  maxPerSlot   Int       @default(5)
+  imageUrl     String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+model Booking {
+  id             String       @id @default(cuid())
+  bookingCode    String       @unique
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  templeId       String
+  temple         Temple       @relation(fields: [templeId], references: [id], onDelete: Cascade)
+  poojaId        String
+  pooja          PoojaService @relation(fields: [poojaId], references: [id], onDelete: Cascade)
+  priestId       String?
+  priest         Priest?      @relation(fields: [priestId], references: [id])
+  slotDate       String
+  slotTime       String
+  mode           String       @default("IN_PERSON") // IN_PERSON | LIVE_STREAM
+  devoteeName    String
+  devoteePhone   String
+  gotra          String?
+  nakshatra      String?
+  sankalpamNotes String?
+  prasadAddress  String?
+  amountInr      Int
+  status         String       @default("CONFIRMED") // PENDING | CONFIRMED | COMPLETED | CANCELLED
+  paymentStatus  String       @default("PAID") // PENDING | PAID | REFUNDED
+  paymentMethod  String? // UPI | CARD | NETBANKING
+  transactionId  String?
+  paidAt         DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
